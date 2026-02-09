@@ -5,6 +5,7 @@ import express, {
 } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import notFound from "./app/middlewares/notFound.js";
 
 const app: Application = express();
 
@@ -21,5 +22,8 @@ app.use(cors());
 app.get("/", (req: Request, res: Response) => {
   res.send("Server is running");
 });
+
+// Middlewares
+app.use(notFound);
 
 export default app;
