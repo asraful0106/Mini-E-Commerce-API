@@ -5,6 +5,7 @@ import { handleCastError } from "../helpers/handleCastErrors.js";
 import { handleZoodError } from "../helpers/handleZoodError.js";
 import { handleValidationError } from "../helpers/handleValidationError.js";
 import AppError from "../errorHelper/AppError.js";
+import { envVars } from "../config/env.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const globalErrorHandler = async (
@@ -13,10 +14,10 @@ export const globalErrorHandler = async (
   res: Response,
   next: NextFunction,
 ) => {
-//   if (envVars.NODE_ENV === "Development") {
-//     // eslint-disable-next-line no-console
-//     console.log(err);
-//   }
+  if (envVars.NODE_ENV === "Development") {
+    // eslint-disable-next-line no-console
+    console.log(err);
+  }
 
   let errorSources: TErrorSourch[] = [];
   let statusCode = 500;
@@ -57,7 +58,7 @@ export const globalErrorHandler = async (
     success: false,
     message,
     errorSources,
-    // err: envVars.NODE_ENV === "Development" ? err : null,
-    // stack: envVars.NODE_ENV === "Development" ? err.stack : null,
+    err: envVars.NODE_ENV === "Development" ? err : null,
+    stack: envVars.NODE_ENV === "Development" ? err.stack : null,
   });
 };
