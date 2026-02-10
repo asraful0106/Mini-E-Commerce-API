@@ -35,7 +35,7 @@ export interface IUser {
   name: string;
   phone?: string | null;
   email: string;
-  password: string;
+  password?: string;
   address?: string | null;
   is_verified: boolean;
   role: UserRole;
@@ -43,7 +43,7 @@ export interface IUser {
   isDeleted?: boolean;
   isActive?: IsActive;
   image: IUserImage;
-  auth: IAuthProvider[];
+  auths: IAuthProvider[];
   cart: Types.ObjectId[];
   orders: Types.ObjectId[];
   created_at: Date;

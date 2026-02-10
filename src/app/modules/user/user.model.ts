@@ -55,7 +55,7 @@ const userSchema = new Schema<IUser>(
       index: true,
     },
 
-    password: { type: String, required: true },
+    password: { type: String },
 
     address: { type: String, required: true, default: null, trim: true },
 
@@ -89,7 +89,7 @@ const userSchema = new Schema<IUser>(
       default: { url: "", provider: Provider.LOCAL },
     },
 
-    auth: {
+    auths: {
       type: [authProviderSchema],
       default: [],
     },

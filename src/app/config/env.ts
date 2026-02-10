@@ -6,6 +6,7 @@ interface IEnvConfig {
   PORT: string;
   DB_URL: string;
   NODE_ENV: "Development" | "Production";
+  BCRYPT_SALT_ROUND: string;
 }
 
 const loadEnvVariables = (): IEnvConfig => {
@@ -13,6 +14,7 @@ const loadEnvVariables = (): IEnvConfig => {
     "PORT",
     "DB_URL",
     "NODE_ENV",
+    "BCRYPT_SALT_ROUND",
   ];
   requiredEnvVariable.forEach((key) => {
     if (!process.env[key]) {
@@ -23,6 +25,7 @@ const loadEnvVariables = (): IEnvConfig => {
     PORT: process.env.PORT as string,
     DB_URL: process.env.DB_URL as string,
     NODE_ENV: process.env.NODE_ENV as "Development" | "Production",
+    BCRYPT_SALT_ROUND: process.env.BCRYPT_SALT_ROUND as string,
   };
 };
 
