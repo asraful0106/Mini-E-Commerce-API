@@ -12,6 +12,12 @@ export enum IsActive {
   BLOCKED = "BLOCKED",
 }
 
+export enum Provider {
+  S3 = "S3",
+  LOCAL = "LOCAL",
+  CLOUDINARY = "CLOUDINARY",
+}
+
 export interface IAuthProvider {
   provider: string;
   providerId: string;
@@ -19,6 +25,7 @@ export interface IAuthProvider {
 
 export interface IUserImage {
   url: string;
+  provider: Provider;
   created_at?: Date;
   updated_at?: Date;
 }
