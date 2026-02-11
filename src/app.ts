@@ -8,8 +8,24 @@ import cors from "cors";
 import notFound from "./app/middlewares/notFound.js";
 import { globalErrorHandler } from "./app/middlewares/globalErrorHandler.js";
 import router from "./app/routes/index.js";
+import expressSession from "express-session";
+import { envVars } from "./app/config/env.js";
+import passport from "passport";
+import { configurePassport } from "./app/config/passport.js";
 
 const app: Application = express();
+
+// Passport auth middleware
+app.use(
+  expressSession({
+    secret: envVars.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+configurePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 // For accessing the cookie
 app.use(cookieParser());

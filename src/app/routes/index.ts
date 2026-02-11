@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userRouter } from "../modules/user/user.route.js";
+import { authRouter } from "../modules/auth/auth.route.js";
 
 const router = Router();
 
@@ -14,6 +15,10 @@ const moduleRoutes: IRouter[] = [
     path: "/user",
     route: userRouter,
   },
+  {
+    path: "/auth",
+    route: authRouter
+  }
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));
