@@ -10,9 +10,6 @@ import { AuthServices } from "./auth.service.js";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const credentialsLogin = catchAsync(async (req, res, next) => {
-  console.log("Login request body:", req.body); // ← add this
-  console.log("req.body.email:", req.body?.email); // ← add
-  console.log("req.body.password:", req.body?.password);
   passport.authenticate("local", async (err: any, user: any, info: any) => {
     if (err) return next(new AppError(401, err));
     if (!user) return next(new AppError(401, info?.message || "Unauthorized"));

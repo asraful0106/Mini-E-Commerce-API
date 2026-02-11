@@ -18,6 +18,8 @@ interface IEnvConfig {
   JWT_REFRESH_EXPIRES: string;
   // Express session
   EXPRESS_SESSION_SECRET: string;
+  // Storage Provider
+  PROVIDER: "S3" | "LOCAL" | "CLOUDINARY";
 }
 
 const loadEnvVariables = (): IEnvConfig => {
@@ -37,6 +39,8 @@ const loadEnvVariables = (): IEnvConfig => {
     "JWT_REFRESH_EXPIRES",
     // Express session
     "EXPRESS_SESSION_SECRET",
+    // Storage Provider
+    "PROVIDER",
   ];
   requiredEnvVariable.forEach((key) => {
     if (!process.env[key]) {
@@ -59,6 +63,8 @@ const loadEnvVariables = (): IEnvConfig => {
     JWT_REFRESH_EXPIRES: process.env.JWT_REFRESH_EXPIRES as string,
     // Express session
     EXPRESS_SESSION_SECRET: process.env.EXPRESS_SESSION_SECRET as string,
+    // Storage Provider
+    PROVIDER: process.env.PROVIDER as "S3" | "LOCAL" | "CLOUDINARY",
   };
 };
 
