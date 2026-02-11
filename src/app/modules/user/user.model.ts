@@ -27,11 +27,10 @@ const authProviderSchema = new Schema<IAuthProvider>(
 
 const userImageSchema = new Schema<IUserImage>(
   {
-    url: { type: String, required: true },
+    url: { type: String },
     provider: {
       type: String,
       enum: Object.values(Provider),
-      default: Provider.LOCAL,
     },
   },
   {
@@ -52,12 +51,11 @@ const userSchema = new Schema<IUser>(
       unique: true,
       lowercase: true,
       trim: true,
-      index: true,
     },
 
     password: { type: String },
 
-    address: { type: String, required: true, default: null, trim: true },
+    address: { type: String, default: null, trim: true },
 
     is_verified: { type: Boolean, default: false, required: true },
 
@@ -85,8 +83,7 @@ const userSchema = new Schema<IUser>(
 
     image: {
       type: userImageSchema,
-      required: true,
-      default: { url: "", provider: Provider.LOCAL },
+      default: null,
     },
 
     auths: {
@@ -116,8 +113,8 @@ const userSchema = new Schema<IUser>(
   },
 );
 
-// Helpful
-userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ phone: 1 });
+// Index
+// userSchema.index({ email: 1 }, { unique: true });
+// userSchema.index({ phone: 1 });
 
 export const User: Model<IUser> = model<IUser>("User", userSchema);
