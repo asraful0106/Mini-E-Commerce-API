@@ -91,13 +91,11 @@ const userSchema = new Schema<IUser>(
       default: [],
     },
 
-    cart: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Cart",
-        default: [],
-      },
-    ],
+    cart: {
+      type: Schema.Types.ObjectId,
+      ref: "Cart",
+      default: null,
+    },
 
     orders: [
       {

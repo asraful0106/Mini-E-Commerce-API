@@ -22,6 +22,10 @@ router.patch(
   userController.updateUser,
 );
 
-router.delete("/:id", userController.deleteUser);
+router.delete(
+  "/:id",
+  checkAuth(...Object.values(UserRole)),
+  userController.deleteUser,
+);
 
 export const userRouter = router;

@@ -44,7 +44,7 @@ export interface IUser {
   isActive?: IsActive;
   image: IUserImage;
   auths: IAuthProvider[];
-  cart: Types.ObjectId[];
+  cart: Types.ObjectId;
   orders: Types.ObjectId[];
   created_at: Date;
   updated_at: Date;
