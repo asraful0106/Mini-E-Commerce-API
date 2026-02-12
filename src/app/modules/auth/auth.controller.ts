@@ -7,6 +7,8 @@ import { clearCookies, setAuthCookie } from "../../utils/manageCookies.js";
 import { sendResposne } from "../../utils/sendResponse.js";
 import { StatusCodes } from "http-status-codes";
 import { AuthServices } from "./auth.service.js";
+import type { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const credentialsLogin = catchAsync(async (req, res, next) => {

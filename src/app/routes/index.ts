@@ -2,6 +2,7 @@ import { Router } from "express";
 import { userRouter } from "../modules/user/user.route.js";
 import { authRouter } from "../modules/auth/auth.route.js";
 import { productRouter } from "../modules/product/product.route.js";
+import { cartRouter } from "../modules/cart/cart.route.js";
 
 const router = Router();
 
@@ -23,6 +24,10 @@ const moduleRoutes: IRouter[] = [
   {
     path: "/product",
     route: productRouter,
+  },
+  {
+    path: "/cart",
+    route: cartRouter,
   },
 ];
 
