@@ -41,9 +41,9 @@ mini-e-commerce/
 │   ├── middlewares/          # auth, role check, zod validation
 │   ├── models/               # Mongoose schemas (User, Product, Cart, Order, ...)
 │   ├── routes/               # auth.routes.ts, cart.routes.ts, ...
-│   ├── validations/          # Zod schemas
 │   ├── interfaces/           # UserRole, custom interfaces
-│   ├── app.ts / server.ts    # Express app setup & server start
+│   ├── app.ts                # Express app setup
+│   ├── server.ts             # Express server start
 ├── .env                      # PORT, MONGO_URI, JWT_SECRET, ...
 ├── package.json
 └── tsconfig.json
