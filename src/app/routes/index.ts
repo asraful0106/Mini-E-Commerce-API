@@ -3,6 +3,8 @@ import { userRouter } from "../modules/user/user.route.js";
 import { authRouter } from "../modules/auth/auth.route.js";
 import { productRouter } from "../modules/product/product.route.js";
 import { cartRouter } from "../modules/cart/cart.route.js";
+import orderRouter from "../modules/order/order.route.js";
+import { paymentRoutes } from "../modules/payment/payment.route.js";
 
 const router = Router();
 
@@ -28,6 +30,14 @@ const moduleRoutes: IRouter[] = [
   {
     path: "/cart",
     route: cartRouter,
+  },
+  {
+    path: "/order",
+    route: orderRouter,
+  },
+  {
+    path: "/payment",
+    route: paymentRoutes,
   },
 ];
 
