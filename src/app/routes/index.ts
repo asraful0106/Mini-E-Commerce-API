@@ -5,6 +5,7 @@ import { productRouter } from "../modules/product/product.route.js";
 import { cartRouter } from "../modules/cart/cart.route.js";
 import orderRouter from "../modules/order/order.route.js";
 import { paymentRoutes } from "../modules/payment/payment.route.js";
+import { imageRouter } from "../modules/image/image.route.js";
 
 const router = Router();
 
@@ -38,6 +39,10 @@ const moduleRoutes: IRouter[] = [
   {
     path: "/payment",
     route: paymentRoutes,
+  },
+  {
+    path: "/image",
+    route: imageRouter,
   },
 ];
 
