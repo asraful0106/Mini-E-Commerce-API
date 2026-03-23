@@ -16,6 +16,18 @@ const normalizeNumberFields = (body: any) => {
   return body;
 };
 
+const getProducts = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const products = await productService.getProducts();
+    sendResposne(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Product get successfully",
+      data: products,
+    });
+  },
+);
+
 const createProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     normalizeNumberFields(req.body);
@@ -73,7 +85,11 @@ const updateProduct = catchAsync(
       );
     }
 
-    const updated = await productService.updateProduct(id as string, req.body, imageUrls);
+    const updated = await productService.updateProduct(
+      id as string,
+      req.body,
+      imageUrls,
+    );
 
     sendResposne(res, {
       success: true,
@@ -100,6 +116,7 @@ const deleteProduct = catchAsync(
 );
 
 export const productController = {
+  getProducts,
   createProduct,
   updateProduct,
   deleteProduct,

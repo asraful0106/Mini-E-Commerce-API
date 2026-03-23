@@ -11,6 +11,9 @@ import {
 
 const router = Router();
 
+// Get all products
+router.get("/", productController.getProducts);
+
 // Create product
 // form-data:
 // - images: (multiple files)

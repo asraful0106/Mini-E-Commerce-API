@@ -34,8 +34,13 @@ app.use(express.json());
 // For url encoded data
 app.use(express.urlencoded({ extended: true }));
 
+// CORS configuration
+const corsOptions = {
+  origin: 'http://127.0.0.1:5500', // Allow all origins
+  credentials: true, // Allow cookies and credentials to be sent
+};
 // For allowing frontend to access backend
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server is running");

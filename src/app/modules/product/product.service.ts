@@ -6,6 +6,11 @@ import type { IProduct, IProductImage } from "./product.interface.js";
 import { deleteLocalFileByUrl } from "../../utils/localUpload.js";
 import { Product } from "./product.model.js";
 
+const getProducts = async () => {
+  const products = await Product.find({});
+  return products;
+};
+
 const createProduct = async (
   payload: Partial<IProduct>,
   imageUrls: string[],
@@ -75,6 +80,7 @@ const deleteProduct = async (id: string) => {
 };
 
 export const productService = {
+  getProducts,
   createProduct,
   updateProduct,
   deleteProduct,
