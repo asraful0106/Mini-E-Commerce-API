@@ -2,15 +2,15 @@ import type { Server } from "node:http";
 import app from "./app.js";
 import { seedSuperAdmin } from "./app/utils/seedSuperAdmin.js";
 import connectToDb from "./app/database/db.js";
+import { envVars } from "./app/config/env.js";
 
 let server: Server;
-const PORT = 4000;
 
 const startServer = async () => {
   try {
     await connectToDb();
-    server = app.listen(PORT, () =>
-      console.log(`Server is running at port: ${PORT}`),
+    server = app.listen(envVars.PORT, () =>
+      console.log(`Server is running at port: ${envVars.PORT}`),
     );
   } catch (err) {
     console.log(err);

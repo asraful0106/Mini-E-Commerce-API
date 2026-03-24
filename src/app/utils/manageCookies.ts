@@ -10,6 +10,9 @@ export const setAuthCookie = (res: Response, tokenInfo: AuthTokens) => {
     res.cookie("accessToken", tokenInfo.accessToken, {
       httpOnly: true,
       secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 15 * 60 * 1000, // 15 minutes
     });
   }
 
@@ -17,6 +20,9 @@ export const setAuthCookie = (res: Response, tokenInfo: AuthTokens) => {
     res.cookie("refreshToken", tokenInfo.refreshToken, {
       httpOnly: true,
       secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
   }
 };

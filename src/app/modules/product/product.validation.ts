@@ -40,7 +40,12 @@ export const createProductZodSchema = z.object({
     .optional(),
 
   is_active: z
-    .boolean({ invalid_type_error: "is_active must be boolean." })
+    .string()
+    .transform((val) => {
+      if (val === "true") return true;
+      if (val === "false") return false;
+      throw new Error(`is_active must be 'true' or 'false' val: ${val}`);
+    })
     .optional(),
 });
 
@@ -79,6 +84,11 @@ export const updateProductZodSchema = z.object({
     .optional(),
 
   is_active: z
-    .boolean({ invalid_type_error: "is_active must be boolean." })
+    .string()
+    .transform((val) => {
+      if (val === "true") return true;
+      if (val === "false") return false;
+      throw new Error(`is_active must be 'true' or 'false' val: ${val}`);
+    })
     .optional(),
 });

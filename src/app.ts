@@ -21,6 +21,12 @@ app.use(
     secret: envVars.EXPRESS_SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false, // must be false for HTTP
+      sameSite: "lax", // cross-site cookies not required for local dev
+      maxAge: 24 * 60 * 60 * 1000,
+    },
   }),
 );
 configurePassport();
@@ -36,8 +42,20 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://127.0.0.1:5500', // Allow all origins
-  credentials: true, // Allow cookies and credentials to be sent
+  origin: (
+    origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void,
+  ) => {
+    const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:5500"];
+
+    // Allow requests with no origin (Postman, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 };
 // For allowing frontend to access backend
 app.use(cors(corsOptions));
