@@ -15,6 +15,7 @@ export interface IProduct {
   reserved_qty?: number;
   is_active?: boolean;
   images: IProductImage[];
+  category?: string;
   created_at?: Date;
   updated_at?: Date;
 }

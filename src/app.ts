@@ -46,7 +46,12 @@ const corsOptions = {
     origin: string | undefined,
     callback: (err: Error | null, allow?: boolean) => void,
   ) => {
-    const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:5500"];
+    const allowedOrigins = [
+      "http://127.0.0.1:5500",
+      "http://127.0.0.1:5501",
+      "http://localhost:5500",
+      "http://localhost:5501",
+    ];
 
     // Allow requests with no origin (Postman, curl, etc.)
     if (!origin || allowedOrigins.includes(origin)) {
