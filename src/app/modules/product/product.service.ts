@@ -5,9 +5,22 @@ import { Provider } from "../user/user.interface.js";
 import type { IProduct, IProductImage } from "./product.interface.js";
 import { deleteLocalFileByUrl } from "../../utils/localUpload.js";
 import { Product } from "./product.model.js";
+import { string } from "zod";
 
 const getProducts = async () => {
   const products = await Product.find({});
+  return products;
+};
+
+const getProductByID = async (id: string) => {
+  const products = await Product.findById(id);
+  return products;
+};
+
+const getProductsByCategory = async (category: string) => {
+  const products = await Product.find({
+    category,
+  });
   return products;
 };
 
@@ -81,6 +94,8 @@ const deleteProduct = async (id: string) => {
 
 export const productService = {
   getProducts,
+  getProductByID,
+  getProductsByCategory,
   createProduct,
   updateProduct,
   deleteProduct,

@@ -28,6 +28,34 @@ const getProducts = catchAsync(
   },
 );
 
+const getProductByID = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const product = await productService.getProductByID(id as string);
+    sendResposne(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Product get successfully",
+      data: product,
+    });
+  },
+);
+
+const getProductsByCategory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { category } = req.params;
+    const products = await productService.getProductsByCategory(
+      category as string,
+    );
+    sendResposne(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "Product get successfully",
+      data: products,
+    });
+  },
+);
+
 const createProduct = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     normalizeNumberFields(req.body);
@@ -117,6 +145,8 @@ const deleteProduct = catchAsync(
 
 export const productController = {
   getProducts,
+  getProductByID,
+  getProductsByCategory,
   createProduct,
   updateProduct,
   deleteProduct,

@@ -14,6 +14,12 @@ const router = Router();
 // Get all products
 router.get("/", productController.getProducts);
 
+//Get product by ID
+router.get("/:id", productController.getProductByID);
+
+// Get products by category
+router.get("/category/:category", productController.getProductsByCategory);
+
 // Create product
 // form-data:
 // - images: (multiple files)

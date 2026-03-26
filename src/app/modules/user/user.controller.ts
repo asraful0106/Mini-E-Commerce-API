@@ -5,6 +5,19 @@ import { sendResposne } from "../../utils/sendResponse.js";
 import { userService } from "./user.service.js";
 import { saveLocalImage } from "../../utils/localUpload.js";
 import { envVars } from "../../config/env.js";
+import AppError from "../../errorHelper/AppError.js";
+
+const getMyAccount = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const me = await userService.getMyAccount(req.user);
+    sendResposne(res, {
+      success: true,
+      statusCode: StatusCodes.OK,
+      message: "User get successfully",
+      data: me,
+    });
+  },
+);;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const createUser = catchAsync(
@@ -64,6 +77,7 @@ const deleteUser = catchAsync(
 );
 
 export const userController = {
+  getMyAccount,
   createUser,
   updateUser,
   deleteUser,

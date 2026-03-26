@@ -24,6 +24,7 @@ const ProductSchema = new Schema<IProduct>(
     reserved_qty: { type: Number, default: 0 },
     is_active: { type: Boolean, default: true },
     images: { type: [ProductImageSchema], default: [] },
+    category: { type: Schema.Types.ObjectId },
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" },

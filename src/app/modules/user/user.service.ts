@@ -5,6 +5,19 @@ import { User } from "./user.model.js";
 import { envVars } from "../../config/env.js";
 import bcrypt from "bcryptjs";
 import { deleteLocalFileByUrl } from "../../utils/localUpload.js";
+import type { JwtPayload } from "jsonwebtoken";
+
+const getMyAccount = async (user: JwtPayload | undefined) => {
+  if (!user) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      "You are not permitted to visit this url",
+    );
+  }
+
+  const me = await User.findById(user.userId);
+  return me;
+};
 
 const createUser = async (payload: Partial<IUser>) => {
   const { email, name, password, ...rest } = payload;
@@ -87,6 +100,7 @@ const deleteUser = async (id: string) => {
 };
 
 export const userService = {
+  getMyAccount,
   createUser,
   updateUser,
   deleteUser,

@@ -8,6 +8,12 @@ import { UserRole } from "./user.interface.js";
 
 const router = Router();
 
+router.get(
+  "/me",
+  checkAuth(...Object.values(UserRole)),
+  userController.getMyAccount,
+);
+
 router.post(
   "/register",
   validateRequest(creatUserZodSchema),

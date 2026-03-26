@@ -47,6 +47,7 @@ export const createProductZodSchema = z.object({
       throw new Error(`is_active must be 'true' or 'false' val: ${val}`);
     })
     .optional(),
+  category: z.string().optional(),
 });
 
 export const updateProductZodSchema = z.object({
@@ -91,4 +92,5 @@ export const updateProductZodSchema = z.object({
       throw new Error(`is_active must be 'true' or 'false' val: ${val}`);
     })
     .optional(),
+  category: z.string().optional(),
 });
