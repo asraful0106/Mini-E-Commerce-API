@@ -2,7 +2,11 @@ import AppError from "../../errorHelper/AppError.js";
 import mongoose, { Types } from "mongoose";
 import { Cart } from "../cart/cart.model.js";
 import { Order } from "./order.model.js";
-import { ORDER_STATUS, type IOrder, type IOrderItem } from "./order.interface.js";
+import {
+  ORDER_STATUS,
+  type IOrder,
+  type IOrderItem,
+} from "./order.interface.js";
 import { Payment } from "../payment/payment.model.js";
 import { PAYMENT_STATUS } from "../payment/payment.interface.js";
 import { User } from "../user/user.model.js";
@@ -44,10 +48,7 @@ const createOrderFromCart = async (userId: string) => {
         throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
 
       if (product.is_active === false) {
-        throw new AppError(
-          StatusCodes.BAD_REQUEST,
-          "Product is not active!",
-        );
+        throw new AppError(StatusCodes.BAD_REQUEST, "Product is not active!");
       }
 
       const available =
@@ -155,10 +156,18 @@ const updateOrderStatus = async (orderId: string, status: ORDER_STATUS) => {
   return order;
 };
 
+const deleteOrderStatus = async (orderId: string) => {
+  const order = await Order.findById(orderId);
+  if (!order) throw new AppError(StatusCodes.NOT_FOUND, "Order not found!");
+  await Order.findByIdAndDelete(orderId);
+  return;
+};
+
 export const OrderService = {
   createOrderFromCart,
   getMyOrders,
   getAllOrders,
   getSingleOrder,
   updateOrderStatus,
+  deleteOrderStatus,
 };

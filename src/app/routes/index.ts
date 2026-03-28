@@ -7,6 +7,7 @@ import orderRouter from "../modules/order/order.route.js";
 import { paymentRoutes } from "../modules/payment/payment.route.js";
 import { imageRouter } from "../modules/image/image.route.js";
 import { CategoryRoutes } from "../modules/category/category.route.js";
+import { DonationRoutes } from "../modules/donation/donation.route.js";
 
 const router = Router();
 
@@ -34,7 +35,7 @@ const moduleRoutes: IRouter[] = [
     route: cartRouter,
   },
   {
-    path: "/order",
+    path: "/orders",
     route: orderRouter,
   },
   {
@@ -49,6 +50,10 @@ const moduleRoutes: IRouter[] = [
     path: "/categories",
     route: CategoryRoutes
   },
+  {
+    path: "/donations",
+    route:DonationRoutes
+  }
 ];
 
 moduleRoutes.forEach((route) => router.use(route.path, route.route));

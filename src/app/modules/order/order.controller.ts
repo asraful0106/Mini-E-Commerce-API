@@ -86,6 +86,25 @@ const updateOrderStatus = catchAsync(
   },
 );
 
+const deleteOrderStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { orderId } = req.params;
+
+    if (!orderId || Array.isArray(orderId)) {
+      throw new AppError(StatusCodes.BAD_REQUEST, "Valid orderId is required");
+    }
+
+    await OrderService.deleteOrderStatus(orderId);
+
+    sendResposne(res, {
+      statusCode: 200,
+      success: true,
+      message: "Order deleted successfully",
+      data: null,
+    });
+  },
+);;
+
 
 export const OrderController = {
   createOrderFromCart,
@@ -93,4 +112,5 @@ export const OrderController = {
   getSingleOrder,
   getAllOrders,
   updateOrderStatus,
+  deleteOrderStatus,
 };

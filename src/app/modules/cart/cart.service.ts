@@ -1,14 +1,13 @@
+// cart.service.ts
 import mongoose, { Types } from "mongoose";
 import { StatusCodes } from "http-status-codes";
 import AppError from "../../errorHelper/AppError.js";
 import { Cart } from "./cart.model.js";
-
-// OPTIONAL (recommended): use Product model to validate product exists + price/stock
-// import { Product } from "../product/product.model.js";
+import { Product } from "../product/product.model.js";
 
 const getMyCart = async (userId: string) => {
   const cart = await Cart.findOne({ user_id: userId })
-    .populate("cart_item.product_id") // optional
+    .populate("cart_item.product_id", "name price images slug") // populate useful fields
     .lean();
 
   return cart ?? { user_id: userId, cart_item: [] };
@@ -18,43 +17,53 @@ const addItem = async (userId: string, productId: string, qty: number) => {
   const uid = new Types.ObjectId(userId);
   const pid = new Types.ObjectId(productId);
 
-  // OPTIONAL: Validate product exists, active, price, stock, etc.
-  // const product = await Product.findById(pid).select("price stock_qty reserved_qty is_active");
-  // if (!product) throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
-  // const unitPrice = product.price;
+  // Validate product exists, is active, and has enough stock
+  const product = await Product.findById(pid).select(
+    "price stock_qty reserved_qty is_active name",
+  );
 
-  // If you don't check Product now, you must accept unit_price somehow.
-  // Minimal safe approach: require Product check. For now, we'll assume you have Product model.
-  // If you don't, tell me and I’ll adjust.
+  if (!product) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Product not found!");
+  }
 
-  throwIfNoProductModel(); // remove when Product is available
+  if (product.is_active === false) {
+    throw new AppError(StatusCodes.BAD_REQUEST, "Product is not active!");
+  }
 
-  const cart = await Cart.findOne({ user_id: uid });
+  const availableStock =
+    Number(product.stock_qty ?? 0) - Number(product.reserved_qty ?? 0);
+  if (availableStock < qty) {
+    throw new AppError(
+      StatusCodes.BAD_REQUEST,
+      `Insufficient stock. Only ${availableStock} available.`,
+    );
+  }
 
-  // If no cart -> create
+  const unit_price = Number(product.price);
+
+  let cart = await Cart.findOne({ user_id: uid });
+
   if (!cart) {
-    // unit_price should come from Product
-    const unit_price = 0; // replace by product.price
-    const created = await Cart.create({
+    // Create new cart
+    cart = await Cart.create({
       user_id: uid,
       cart_item: [{ product_id: pid, qty, unit_price }],
     });
-    return created;
-  }
-
-  // If exists -> merge/increment qty
-  const item = cart.cart_item.find(
-    (i) => i.product_id.toString() === pid.toString(),
-  );
-
-  if (item) {
-    item.qty += qty;
   } else {
-    const unit_price = 0; // replace by product.price
-    cart.cart_item.push({ product_id: pid, qty, unit_price });
+    // Check if item already exists in cart
+    const existingItem = cart.cart_item.find(
+      (i) => i.product_id.toString() === pid.toString(),
+    );
+
+    if (existingItem) {
+      existingItem.qty += qty;
+    } else {
+      cart.cart_item.push({ product_id: pid, qty, unit_price });
+    }
+
+    await cart.save();
   }
 
-  await cart.save();
   return cart;
 };
 
@@ -72,17 +81,15 @@ const updateItemQty = async (
   const idx = cart.cart_item.findIndex(
     (i) => i.product_id.toString() === pid.toString(),
   );
-  if (idx === -1)
+
+  if (idx === -1) {
     throw new AppError(StatusCodes.NOT_FOUND, "Cart item not found!");
+  }
 
   if (qty === 0) {
     cart.cart_item.splice(idx, 1);
   } else {
-    const item = cart.cart_item[idx];
-    if (!item) {
-      throw new AppError(StatusCodes.NOT_FOUND, "Cart item not found!");
-    }
-    item.qty = qty;
+    cart.cart_item[idx].qty = qty;
   }
 
   await cart.save();
@@ -96,12 +103,12 @@ const removeItem = async (userId: string, productId: string) => {
   const cart = await Cart.findOne({ user_id: uid });
   if (!cart) throw new AppError(StatusCodes.NOT_FOUND, "Cart not found!");
 
-  const before = cart.cart_item.length;
+  const beforeLength = cart.cart_item.length;
   cart.cart_item = cart.cart_item.filter(
     (i) => i.product_id.toString() !== pid.toString(),
   );
 
-  if (cart.cart_item.length === before) {
+  if (cart.cart_item.length === beforeLength) {
     throw new AppError(StatusCodes.NOT_FOUND, "Cart item not found!");
   }
 
@@ -142,13 +149,6 @@ const checkout = async (userId: string) => {
     await session.endSession();
   }
 };
-
-function throwIfNoProductModel() {
-  throw new AppError(
-    StatusCodes.NOT_IMPLEMENTED,
-    "Product model check is required to set unit_price. Wire Product model in cart.service.ts (recommended).",
-  );
-}
 
 export const cartService = {
   getMyCart,

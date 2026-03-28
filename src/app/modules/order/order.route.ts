@@ -38,10 +38,16 @@ orderRouter.get(
 
 // Update order status
 orderRouter.patch(
-  "/:orderId/status",
+  "/:orderId",
   checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
   validateRequest(updateOrderStatusZodSchema),
   OrderController.updateOrderStatus,
+);
+
+orderRouter.delete(
+  "/:orderId",
+  checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  OrderController.deleteOrderStatus,
 );
 
 export default orderRouter;
